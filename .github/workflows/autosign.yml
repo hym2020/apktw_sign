@@ -1,0 +1,28 @@
+name: autosign
+on:
+    push:
+        branches:
+            - master
+        schedule:
+            - cron "15 16 * * *"
+jobs:
+    start_sign:
+        name: start daily sign
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout master
+              uses: actions/checkout@master
+            - name: setup python
+              uses: actions/setup-python@v2
+              with:
+                python-version: '3.x'
+                architecture: 'x64'
+            - name: start signup
+              env:
+                USR: ${{ secrets.USR }}
+                PASS: ${{ secrets.PASS }}
+              run: |
+                echo "Install Dependencies"
+                pip install requests bs4
+                echo "Start sign"
+                python apkTWAutoLogin.py
